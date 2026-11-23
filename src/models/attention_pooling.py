@@ -32,7 +32,7 @@ class AttentionPooling(nn.Module):
         
         # Apply mask if provided (mask positions with a very small value)
         if mask is not None:
-            # 使用 float('-inf') 或者 scores.dtype 的最小值，避免 AMP 模式下 float16 溢出
+            # Use negative infinity or the dtype minimum to avoid float16 overflow under AMP.
             fill_value = -1e4 if scores.dtype == torch.float16 else -1e9
             scores = scores.masked_fill(mask, fill_value)
             

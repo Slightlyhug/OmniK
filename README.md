@@ -6,7 +6,7 @@ This repository intentionally excludes private datasets, PDB/FASTA files, ESM ch
 
 ## Repository map
 
-- `src/models/`: dual-branch model, graph/SE(3) components, task heads, losses, and encoders.
+- `src/models/`: dual-branch model, graph/SE(3) components, task heads, and losses.
 - `src/utils/`: data preparation, feature-store readers, training loop, metrics, calibration, and checkpoint helpers.
 - `train_multitask_lysine.py`: primary multi-task training entry point.
 - `scripts/export_probs_from_checkpoint.py`: inference/export of per-site probabilities.
@@ -17,7 +17,13 @@ This repository intentionally excludes private datasets, PDB/FASTA files, ESM ch
 
 ## Installation
 
-Create an environment with Python 3.10+ and install the dependencies used by your hardware stack. At minimum, the training path needs PyTorch, NumPy, pandas, scikit-learn, h5py, lmdb, tqdm, and Biopython; graph extraction additionally needs Bio.PDB and a DSSP installation when secondary-structure features are desired. Install `fair-esm` for ESM feature extraction.
+Use Python 3.10 or newer. Install a PyTorch build that matches your CUDA or CPU environment, then install the project packages:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Install `fair-esm` only when extracting ESM features. DSSP is an external executable and is optional when secondary-structure features are not needed. TensorBoard and MLflow are optional training-monitoring integrations.
 
 The code is imported from the repository root:
 
@@ -104,6 +110,8 @@ python src/data/extract_graph_features.py \
 ```
 
 The feature-store reader and GPU shard loader used by training are included in `vendor/feature_store/` and no longer depend on the original machine's absolute paths.
+
+Feature creation utilities for packing the released data into feature-store shards are maintained with the project owner because they operate on private, project-specific datasets. The public training, inference, ESM extraction, and graph extraction paths are included here.
 
 ## License and release status
 

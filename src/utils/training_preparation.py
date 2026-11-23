@@ -142,8 +142,7 @@ def prepare_data_artifacts(
     splits.test = _apply_structure_record_filter("test", splits.test)
     logger.info("Data split sizes after structure filters: train=%d val=%d test=%d", len(splits.train), len(splits.val), len(splits.test))
 
-    use_esm_lora = bool(config.get("use_esm_lora", False))
-    use_sequence_windows = bool(config.get("use_sequence_windows", False) or use_esm_lora)
+    use_sequence_windows = bool(config.get("use_sequence_windows", False))
     fasta_dirs: List[str] = []
     mapping = config.get("pdb_fasta_mapping") if isinstance(config.get("pdb_fasta_mapping"), dict) else {}
     for mapped in mapping.values():
@@ -306,4 +305,3 @@ def prepare_data_artifacts(
         use_structure_graph=use_structure_graph,
         graph_cache=graph_cache,
     )
-

@@ -208,7 +208,7 @@ class SequenceTower(nn.Module):
             dropout=dropout
         )
         
-        # [新增] 位置编码：为Transformer提供显式位置信息
+        # Positional encoding gives the Transformer explicit position information.
         self.pos_encoder = PositionalEncoding(hidden_dim)
 
         self.moe_layers = None
@@ -307,7 +307,7 @@ class SequenceTower(nn.Module):
         hidden = hidden.transpose(1, 2)
         hidden = torch.nan_to_num(hidden, nan=0.0, posinf=50.0, neginf=-50.0).clamp(-50.0, 50.0)
         
-        # [新增] 添加位置编码
+        # Add positional encoding.
         hidden = self.pos_encoder(hidden)
         hidden = torch.nan_to_num(hidden, nan=0.0, posinf=50.0, neginf=-50.0).clamp(-50.0, 50.0)
         
@@ -363,7 +363,7 @@ class SequenceTower(nn.Module):
             else:
                 center_feature = pooled_context # Fallback
             
-            # [新增] 应用靶向Dropout到中心特征
+            # Apply targeted dropout to the center feature.
             if hasattr(self, 'center_dropout'):
                 center_feature = self.center_dropout(center_feature)
             if center_alpha < 0.9999:

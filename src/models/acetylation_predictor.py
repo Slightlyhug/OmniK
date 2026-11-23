@@ -1,9 +1,4 @@
-"""PTM dual-branch predictors.
-
-The training pipeline uses :class:`DualBranchFusionPredictor`. Legacy
-acetylation-only models live in ``legacy_predictors`` and are loaded lazily
-through ``__getattr__`` to keep the production import path lightweight.
-"""
+"""Dual-branch predictor implementation used by the production PTM pipeline."""
 
 from __future__ import annotations
 
@@ -45,11 +40,6 @@ from .ptm_disentangled_separator import PTMDisentangledSeparator
 from .learnable_task_attention import LearnableTaskAttentionPool
 
 try:
-    from .esm_lora import ESM2LoRAWrapper
-except Exception:  # optional inference/training dependency
-    ESM2LoRAWrapper = None
-
-try:
     from .egnn_3d_graph import PocketEGNN
 except Exception:  # optional graph dependency
     PocketEGNN = None
@@ -83,56 +73,6 @@ class GradientReversalLayer(nn.Module):
 
     def set_lambda(self, lambda_: float) -> None:
         self.lambda_ = float(lambda_)
-
-
-def normalize_sequence_strings(sequence_strings: Any) -> List[str]:
-    if sequence_strings is None:
-        return []
-    if isinstance(sequence_strings, str):
-        return [sequence_strings]
-    if isinstance(sequence_strings, (list, tuple)):
-        return [str(s) if s is not None else "" for s in sequence_strings]
-    return [str(sequence_strings)]
-
-
-def compute_non_empty_sequence_indices(sequence_strings: Any) -> Tuple[List[str], List[int]]:
-    seq_list = normalize_sequence_strings(sequence_strings)
-    non_empty_idx = [idx for idx, seq in enumerate(seq_list) if len(seq.strip()) > 0]
-    return seq_list, non_empty_idx
-
-
-def merge_non_empty_lora_features(
-    base_features: torch.Tensor,
-    non_empty_indices: List[int],
-    encoded_features: Optional[torch.Tensor],
-) -> torch.Tensor:
-    if not isinstance(base_features, torch.Tensor):
-        raise TypeError("base_features must be a torch.Tensor")
-    if encoded_features is None or len(non_empty_indices) == 0:
-        return base_features
-    merged = base_features.clone()
-    for row_idx, base_idx in enumerate(non_empty_indices):
-        merged[base_idx] = encoded_features[row_idx]
-    return merged
-
-
-# Keep compatibility imports lazy: legacy evaluation code can still import the
-# historical names without forcing optional ESM/plotting dependencies at startup.
-_LEGACY_NAMES = {
-    "AcetylationPredictor",
-    "AblationWrapper",
-    "AcetylationPredictionModel",
-    "MultiTaskLoss",
-    "InterpretabilityModule",
-}
-
-
-def __getattr__(name: str):
-    if name in _LEGACY_NAMES:
-        from . import legacy_predictors
-
-        return getattr(legacy_predictors, name)
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 class SpectralForegroundBlock(nn.Module):
@@ -1178,9 +1118,6 @@ class DualBranchFusionPredictor(nn.Module):
         self.modality_dropout = float(self.config.get("modality_dropout", 0.1))
         self.fusion_gate_bipolar_lambda = float(self.config.get("fusion_gate_bipolar_lambda", 0.0))
         self.use_structure = bool(self.config.get("use_structure", True))
-        self.use_esm_lora = bool(self.config.get("use_esm_lora", False))
-        self.esm_lora_max_len = int(self.config.get("esm_lora_max_len", self.config.get("window_size", 73)))
-        self.sequence_encoder: Optional[nn.Module] = None
         self.branch_warmup_use_branch_logits = bool(self.config.get("branch_warmup_use_branch_logits", False))
         self.branch_warmup_freeze_fusion = bool(self.config.get("branch_warmup_freeze_fusion", False))
         self.branch_warmup_aux_multiplier = float(self.config.get("branch_warmup_aux_multiplier", 1.0))
@@ -1207,23 +1144,6 @@ class DualBranchFusionPredictor(nn.Module):
         self.use_token_aligned_graph_fusion = bool(
             self.config.get("use_token_aligned_graph_fusion", False)
         )
-
-        if self.use_esm_lora:
-            if ESM2LoRAWrapper is None:
-                raise ImportError("use_esm_lora=True but ESM2LoRAWrapper is unavailable. Install transformers and peft.")
-            self.sequence_encoder = ESM2LoRAWrapper(
-                model_name_or_path=str(self.config.get("esm_lora_model_name", "facebook/esm2_t33_650M_UR50D")),
-                r=int(self.config.get("esm_lora_rank", 8)),
-                lora_alpha=int(self.config.get("esm_lora_alpha", 32)),
-                lora_dropout=float(self.config.get("esm_lora_dropout", 0.1)),
-            )
-            if getattr(self.sequence_encoder, "output_dim", 0):
-                lora_dim = int(self.sequence_encoder.output_dim)
-                if lora_dim > 0 and lora_dim != self.seq_input_dim:
-                    self.seq_input_dim = lora_dim
-                    self.local_input_dim = lora_dim
-                    self.global_input_dim = lora_dim
-                    logger.info("DualBranchFusionPredictor: Overriding seq dims to LoRA output_dim=%d", lora_dim)
 
         # LaSt-ViT inspired controls
         self.use_last_foreground = bool(self.config.get("use_last_foreground", False))
@@ -1743,7 +1663,7 @@ class DualBranchFusionPredictor(nn.Module):
             )
             fusion_input_dim = self.branch_hidden_dim * 8 + self.micro_env_feature_dim
             
-        # [NEW] 采用残差结构的融合网络，更好地保留分支特征并促进梯度流动
+        # Use residual fusion to preserve branch features and support gradient flow.
         self.fusion_proj = nn.Linear(fusion_input_dim, self.fusion_hidden_dim)
         self.fusion_residual_block = nn.Sequential(
             nn.Linear(self.fusion_hidden_dim, self.fusion_hidden_dim),
@@ -2110,52 +2030,6 @@ class DualBranchFusionPredictor(nn.Module):
             return None
         return torch.stack(losses, dim=0).mean()
 
-    def _encode_sequences_with_lora(
-        self,
-        sequences: List[str],
-        device: torch.device,
-        target_len: Optional[int] = None,
-    ) -> torch.Tensor:
-        if self.sequence_encoder is None:
-            raise RuntimeError("Sequence encoder is not initialized for LoRA.")
-        if next(self.sequence_encoder.parameters()).device != device:
-            self.sequence_encoder.to(device)
-        seq_list = [str(s) if s is not None else "" for s in sequences]
-        if target_len is not None and int(target_len) > 0:
-            max_len = int(target_len)
-        else:
-            configured_max_len = int(self.esm_lora_max_len) if int(self.esm_lora_max_len) > 0 else 0
-            observed_max_len = max(1, max(len(s) for s in seq_list)) if seq_list else 1
-            max_len = min(configured_max_len, observed_max_len) if configured_max_len > 0 else observed_max_len
-        token_max_len = max_len + 2
-        embeddings, attn_mask = self.sequence_encoder(seq_list, max_len=token_max_len, return_mask=True)
-        embeddings = embeddings.to(device)
-        if isinstance(attn_mask, torch.Tensor):
-            attn_mask = attn_mask.to(device)
-
-        trimmed_list: List[torch.Tensor] = []
-        for i, seq in enumerate(seq_list):
-            emb = embeddings[i]
-            seq_len = len(seq)
-            valid_len = int(attn_mask[i].sum().item()) if isinstance(attn_mask, torch.Tensor) else emb.size(0)
-            if seq_len <= 0:
-                trimmed = emb[:0]
-            else:
-                start = 1 if valid_len >= seq_len + 1 else 0
-                if valid_len >= seq_len + 2:
-                    start = 1
-                end = min(start + seq_len, emb.size(0))
-                trimmed = emb[start:end]
-            trimmed_list.append(trimmed)
-
-        out = embeddings.new_zeros((len(trimmed_list), max_len, embeddings.size(-1)))
-        for i, trimmed in enumerate(trimmed_list):
-            if trimmed.numel() == 0:
-                continue
-            length = min(max_len, trimmed.size(0))
-            out[i, :length] = trimmed[:length]
-        return out
-
     def _apply_last_to_graph_x(
         self,
         x: torch.Tensor,
@@ -2429,35 +2303,6 @@ class DualBranchFusionPredictor(nn.Module):
             seq_window = batch.get('sequence_window')
         if seq_window is None:
             seq_window = batch.get('sequence_features')
-
-        sequence_strings = None
-        if isinstance(sequence_block, dict):
-            sequence_strings = sequence_block.get('window_sequence') or sequence_block.get('window_sequence_str')
-        if sequence_strings is None:
-            sequence_strings = batch.get('sequence_window_str') or batch.get('window_sequence')
-
-        if self.use_esm_lora and sequence_strings is not None:
-            target_len = int(seq_window.shape[1]) if isinstance(seq_window, torch.Tensor) and seq_window.ndim >= 2 else None
-            if isinstance(sequence_strings, (list, tuple)):
-                device = seq_window.device if isinstance(seq_window, torch.Tensor) else next(self.parameters()).device
-                seq_list, non_empty_idx = compute_non_empty_sequence_indices(sequence_strings)
-                if non_empty_idx:
-                    encoded = self._encode_sequences_with_lora(
-                        [seq_list[idx] for idx in non_empty_idx],
-                        device=device,
-                        target_len=target_len,
-                    )
-                    if not isinstance(seq_window, torch.Tensor):
-                        seq_window = encoded.new_zeros((len(seq_list), encoded.size(1), encoded.size(2)))
-                    seq_window = merge_non_empty_lora_features(seq_window, non_empty_idx, encoded)
-            elif isinstance(sequence_strings, str):
-                device = seq_window.device if isinstance(seq_window, torch.Tensor) else next(self.parameters()).device
-                if len(sequence_strings.strip()) > 0:
-                    seq_window = self._encode_sequences_with_lora(
-                        [sequence_strings],
-                        device=device,
-                        target_len=target_len,
-                    )[:1]
 
         # [Fix] Extract micro-environment features early
         micro_env = batch.get('micro_env_features')
@@ -2858,7 +2703,7 @@ class DualBranchFusionPredictor(nn.Module):
         if graph_global is None:
             graph_global = seq_global.new_zeros(seq_global.shape)
 
-        # 若序列分支也出现全掩蔽，显式置零，避免噪声
+        # Explicitly zero a fully masked sequence branch to avoid noise.
         if seq_all_masked is not None and seq_all_masked.any():
             seq_context = seq_context.clone()
             seq_global = seq_global.clone()
@@ -2867,7 +2712,7 @@ class DualBranchFusionPredictor(nn.Module):
             seq_global[seq_all_masked] = 0.0
             seq_global_raw[seq_all_masked] = 0.0
 
-        # Modality Dropout: 随机丢弃某一模态以增强鲁棒性 (仅在训练模式下)
+        # Modality dropout randomly removes one input during training to improve robustness.
         if isinstance(structure_available, torch.Tensor):
             structure_reliability_score = structure_available.unsqueeze(-1).to(dtype=seq_global.dtype, device=seq_global.device)
         elif struct_tensor is not None or graph_data is not None:
@@ -3257,7 +3102,7 @@ class DualBranchFusionPredictor(nn.Module):
 
             fusion_inputs = torch.cat(fusion_list, dim=-1)
 
-        # [NEW] 使用残差结构的融合前向传播
+        # Use the residual fusion forward path.
         x = self.fusion_proj(fusion_inputs)
         residual = x
         x = self.fusion_residual_block(x)
@@ -3701,6 +3546,3 @@ class DualBranchFusionPredictor(nn.Module):
                 + ", ".join(mismatches)
                 + ". Resolve dimensions before optimizer construction; modules are never rebuilt in forward."
             )
-
-
-

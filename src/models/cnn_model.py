@@ -52,7 +52,7 @@ class CNNDualStreamPredictor(nn.Module):
         # Dimensions
         self.seq_dim = config.get("seq_feature_dim", 1280)
         self.struct_dim = config.get("struct_feature_dim", 512)
-        # 优先使用 branch_hidden_dim (配置文件中的键)，如果没有则回退到 hidden_dim 或默认值 256
+        # Prefer branch_hidden_dim; fall back to hidden_dim or 256.
         self.hidden_dim = config.get("branch_hidden_dim", config.get("hidden_dim", 256))
         self.dropout = config.get("dropout", 0.2)
         
@@ -137,17 +137,16 @@ class CNNDualStreamPredictor(nn.Module):
         
         # --- Prediction ---
         # Extract center position feature
-        # 注意：由于使用了MaxPool1d(2, stride=1, padding=1)，序列长度基本保持不变
-        # 但为了保险起见，我们还是重新计算中心位置
+        # Recompute the center in case MaxPool1d changes the sequence length.
         L = x_fused.size(2)
         center_idx = L // 2
         
-        # 提取中心位置特征
+        # Extract the center-position feature.
         center_features = x_fused[:, :, center_idx] # [B, H]
         
-        # 如果配置了 use_attention_pooling，则使用全局平均池化或注意力池化来增强中心特征
+        # Optionally combine the center feature with global or attention pooling.
         if self.config.get('use_attention_pooling', False):
-            # 全局平均池化
+        # Global average pooling.
             global_features = torch.mean(x_fused, dim=2) # [B, H]
             center_features = center_features + global_features
         

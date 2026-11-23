@@ -101,7 +101,7 @@ class UncertaintyTrajectoryAnalyzer:
         method = method or self.entropy_normalization
 
         if method == "l2":
-            # 论文 Eq. 19: L2-normalize probability distribution
+            # Paper Eq. 19: L2-normalize the probability distribution.
             probs = torch.sigmoid(logits)  # [B, T]
             # L2 normalization: M_norm = M / sqrt(sum(M^2))
             prob_l2_norm = probs / (probs.pow(2).sum(dim=0, keepdim=True).sqrt() + 1e-8)
@@ -159,7 +159,7 @@ class UncertaintyTrajectoryAnalyzer:
                     "first_seen_epoch": self.current_epoch,
                 }
 
-            # 论文 Eq. 18: H_cumulative(x_i) = ∑_t H^(t)(x_i)
+            # Paper Eq. 18: H_cumulative(x_i) = sum_t H^(t)(x_i).
             self.cumulative_entropy[sample_id] += entropy_np[i]
 
             # Update metadata (in case labels changed, though shouldn't in PTM)

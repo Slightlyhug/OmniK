@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Optional, Set
 
-# 预定义的常见PTM残基信息（至少10种）
+# Predefined residue information for common PTMs (at least 10 types).
 PTM_RESIDUE_INFO: Dict[str, Dict[str, List[str]]] = {
     'phosphorylation': {
         'expected_residues': ['S', 'T', 'Y'],
@@ -60,7 +60,7 @@ PTM_RESIDUE_INFO: Dict[str, Dict[str, List[str]]] = {
     },
 }
 
-# 兼容常见别名，确保大小写一致
+# Normalize common aliases and capitalization.
 _PTM_ALIASES = {
     'n-linked glycosylation': 'n_linked_glycosylation',
     'o-linked glycosylation': 'o_linked_glycosylation',
@@ -84,7 +84,7 @@ def _normalize_residue(residue: Optional[str]) -> Optional[str]:
     res = str(residue).strip()
     if not res:
         return None
-    # 只考虑单字符氨基酸残基，其他统一使用"Other"
+    # Accept single-letter amino-acid residues and map all others to "Other".
     res = res.upper()
     if len(res) == 1:
         return res
@@ -137,12 +137,12 @@ def resolve_ptm_residue_info(
                 seen.add(normalized_residue)
 
     if not residue_list:
-        residue_list.append('X')  # 占位符，表示数据缺少具体残基信息
+        residue_list.append('X')  # Placeholder for records without a specific residue.
         seen.add('X')
 
     residue_to_id = {residue: idx for idx, residue in enumerate(residue_list)}
 
-    # 确保存在"Other"的映射，位于末尾
+    # Ensure the "Other" mapping exists and appears last.
     if 'Other' not in residue_to_id:
         residue_to_id['Other'] = len(residue_to_id)
     other_id = residue_to_id['Other']

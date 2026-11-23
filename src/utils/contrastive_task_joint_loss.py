@@ -201,7 +201,7 @@ class TransformationContrastiveLoss(nn.Module):
         self.task_weight = float(task_weight)
         self.transformation_weight = float(transformation_weight)
 
-        # Transformation classifier head (論文 Sec. IV-C.1)
+        # Transformation classifier head (paper Sec. IV-C.1).
         self.transformation_classifier = nn.Linear(feature_dim, num_transformations)
 
     def forward(

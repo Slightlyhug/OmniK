@@ -1,0 +1,16 @@
+# Install a PyTorch build compatible with the local CUDA or CPU environment first.
+numpy
+pandas
+scikit-learn
+h5py
+lmdb
+biopython
+tqdm
+PyYAML
+
+# Optional: ESM sequence and inverse-folding feature extraction.
+# fair-esm
+
+# Optional training integrations: tensorboard and mlflow.
+# tensorboard
+# mlflow
