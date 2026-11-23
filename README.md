@@ -61,7 +61,7 @@ Validate configuration and data wiring first:
 
 ```bash
 python train_multitask_lysine.py \
-  --config_path configs/generated/site_feature_full_v3/site_feature_store_v3_extfix_species_rebal_M6_SE3_3l_denseon_learnattn_ddp2_512ga2_neg2p5_50ep.json \
+  --config_path configs/generated/site_feature_full_v3/config.json \
   --dry-run
 ```
 
@@ -69,7 +69,7 @@ Run training on one GPU after the dry-run passes:
 
 ```bash
 python train_multitask_lysine.py \
-  --config_path configs/generated/site_feature_full_v3/site_feature_store_v3_extfix_species_rebal_M6_SE3_3l_denseon_learnattn_ddp2_512ga2_neg2p5_50ep.json
+  --config_path configs/generated/site_feature_full_v3/config.json
 ```
 
 For multi-GPU training, launch the same entry point with `torchrun`; keep checkpoints and logs under `PTM_OUTPUT_ROOT`.
@@ -80,7 +80,7 @@ Export probabilities for a split from a compatible checkpoint:
 
 ```bash
 python scripts/export_probs_from_checkpoint.py \
-  --config configs/generated/site_feature_full_v3/site_feature_store_v3_extfix_species_rebal_M6_SE3_3l_denseon_learnattn_ddp2_512ga2_neg2p5_50ep.json \
+  --config configs/generated/site_feature_full_v3/config.json \
   --checkpoint /path/to/checkpoint_best.pt \
   --store "$PTM_FEATURE_STORE_ROOT" \
   --split test \
