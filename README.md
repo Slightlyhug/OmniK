@@ -23,6 +23,8 @@ Use Python 3.10 or newer. Install a PyTorch build that matches your CUDA or CPU 
 python -m pip install -r requirements.txt
 ```
 
+To recreate the exported PTM Conda environment, use `conda env create -f environment-ptm.yml`. That snapshot includes the full PTM environment, including analysis and visualization packages beyond the release runtime dependencies in `requirements.txt`.
+
 Install `fair-esm` only when extracting ESM features. DSSP is an external executable and is optional when secondary-structure features are not needed. TensorBoard and MLflow are optional training-monitoring integrations.
 
 The code is imported from the repository root:

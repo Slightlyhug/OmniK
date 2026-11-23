@@ -1,16 +1,21 @@
-# Install a PyTorch build compatible with the local CUDA or CPU environment first.
-numpy
-pandas
-scikit-learn
-h5py
-lmdb
-biopython
-tqdm
-PyYAML
+# Install the PyTorch 2.4.1 build matching the target CUDA/CPU platform first.
+torch==2.4.1
+torchvision==0.19.1
+torchaudio==2.4.1
 
-# Optional: ESM sequence and inverse-folding feature extraction.
-# fair-esm
+# PTM training, inference, and data handling (versions from the PTM Conda environment).
+numpy==2.2.6
+pandas==2.3.1
+scikit-learn==1.7.1
+scipy==1.15.3
+h5py==3.14.0
+lmdb==1.7.5
+biopython==1.85
+tqdm==4.66.1
+PyYAML==6.0.2
 
-# Optional training integrations: tensorboard and mlflow.
-# tensorboard
-# mlflow
+# ESM-2 and ESM-IF feature extraction.
+fair-esm==2.0.0
+
+# Optional training dashboard.
+tensorboard==2.14.0
