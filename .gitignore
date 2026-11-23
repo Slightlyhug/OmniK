@@ -1,0 +1,36 @@
+# Training outputs and model artifacts (keep the repository code-only).
+outputs/
+experiments/
+reports/
+data/
+datasets/
+feature_store*/
+**/feature_store*/
+**/*.lmdb/
+**/*.h5
+**/*.hdf5
+**/*.pt
+**/*.pth
+**/*.ckpt
+**/*.safetensors
+**/*.bin
+**/*.npy
+**/*.npz
+**/*.pkl
+**/*.pickle
+**/*.csv
+**/*.tsv
+**/*.log
+**/tensorboard/
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+
+# Keep the published reference config and documentation examples.
+!configs/generated/site_feature_full_v3/
+!configs/generated/site_feature_full_v3/*.json
+!demo/
+!docs/
