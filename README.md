@@ -1,6 +1,6 @@
-# Protein811 PTM Prediction
+# OmniK: Multimodal Lysine PTM Prediction
 
-Code-only release of the Protein811 multi-task PTM prediction framework. The model combines sequence ESM embeddings, optional structure embeddings, local graph features, task-specific heads, learnable task attention, calibration, and post-training evaluation for eight PTM tasks.
+OmniK is a multimodal, multi-task framework for lysine post-translational modification (PTM) prediction. The model combines sequence ESM embeddings, optional structure embeddings, local graph features, task-specific heads, learnable task attention, calibration, and post-training evaluation for eight PTM tasks.
 
 This repository intentionally excludes private datasets, PDB/FASTA files, ESM checkpoints, feature stores, training outputs, and model checkpoints. The published configuration uses environment-variable paths so it can be run on another machine without exposing local filesystem paths.
 
@@ -30,8 +30,8 @@ Install `fair-esm` only when extracting ESM features. DSSP is an external execut
 The code is imported from the repository root:
 
 ```bash
-git clone https://github.com/Slightlyhug/protein811-f4-reproducible.git
-cd protein811-f4-reproducible
+git clone https://github.com/Slightlyhug/OmniK.git
+cd OmniK
 export PYTHONPATH="$PWD:$PYTHONPATH"
 ```
 
@@ -115,6 +115,10 @@ The feature-store reader and GPU shard loader used by training are included in `
 
 Feature creation utilities for packing the released data into feature-store shards are maintained with the project owner because they operate on private, project-specific datasets. The public training, inference, ESM extraction, and graph extraction paths are included here.
 
-## License and release status
+## Data availability
 
-The GitHub repository is initially private for manuscript review. Before making it public, verify that all data, weights, and third-party model licenses permit redistribution, then change the repository visibility in GitHub settings.
+This repository contains the OmniK source code and reproducible execution scripts. The training, validation, and test datasets, LysPTM-StateDB, perturbation data, and whole-human-proteome prediction tables are distributed through Zenodo as the corresponding data release. The prediction tables are provided at probability thresholds of 0.5, 0.6, 0.7, and 0.8; for each threshold, the released high-confidence subset contains sites predicted to have at least three PTM states above that threshold. The Zenodo record and version-specific DOI should be cited when these data are reused.
+
+## License
+
+The OmniK source code is released under the MIT License. See [`LICENSE`](LICENSE) for the full license text. ESM checkpoints, external databases, third-party libraries, and data hosted on Zenodo may be subject to their own licenses or terms of use.
