@@ -1,0 +1,75 @@
+{
+  "uniprot_accession": "Q00169",
+  "protein": "Phosphatidylinositol transfer protein alpha isoform",
+  "gene": "PITPNA",
+  "organism": "Homo sapiens",
+  "sequence_length": 270,
+  "sequence_version": 2,
+  "structure_model": "AF-Q00169-F1-model_v6",
+  "chain": "A",
+  "structure_residue_range": [
+    1,
+    270
+  ],
+  "lysine_positions": [
+    5,
+    31,
+    50,
+    54,
+    60,
+    67,
+    86,
+    104,
+    110,
+    116,
+    127,
+    134,
+    152,
+    155,
+    162,
+    164,
+    167,
+    178,
+    185,
+    194,
+    199,
+    201,
+    208,
+    215,
+    234,
+    251,
+    260,
+    264
+  ],
+  "n_sites": 28,
+  "retrieved_on": "2026-11-28",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": {
+    "sequence": "The UniProt Consortium, UniProtKB Q00169",
+    "structure": "Google DeepMind and EMBL-EBI, AlphaFold Protein Structure Database AF-Q00169-F1 version 6"
+  },
+  "files": [
+    {
+      "path": "fasta/Q00169.fasta",
+      "source_url": "https://rest.uniprot.org/uniprotkb/Q00169.fasta",
+      "bytes": 394,
+      "sha256": "244087a36f18eb832e0f22d9318fe484c88be851af867152953d24baa5aaab9f",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "path": "pdb/Q00169.pdb",
+      "source_url": "https://alphafold.ebi.ac.uk/files/AF-Q00169-F1-model_v6.pdb",
+      "bytes": 187190,
+      "sha256": "848f7515e4cb47057dac1437747c0a4d84b8b98198ec90ccac609877c8f3ba52",
+      "license": "CC-BY-4.0"
+    },
+    {
+      "path": "test.csv",
+      "source": "Generated from the bundled FASTA: all lysine positions; eight labels set to unknown (-1).",
+      "bytes": 3595,
+      "sha256": "2b04f1920729c08feef5148567f2c0f4e078ca96a617a0da0f7cb09e64f20283",
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "purpose": "Inference demonstration; all task labels are unknown. This protein is not claimed to be absent from model training."
+}

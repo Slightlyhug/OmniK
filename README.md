@@ -16,7 +16,9 @@ The release has three components:
 
 **Data and model DOI: [10.5281/zenodo.24533479](https://doi.org/10.5281/zenodo.24533479).** Use this version-specific DOI to identify the resources used in an experiment.
 
-> Reproduction status: the archive provides site windows, labels, and the model checkpoint. Full-length FASTA files, PDB structures, precomputed ESM features, and feature-store shards are not deposited in this version. The workflow below rebuilds those features from local sequence/structure inputs; exact reproduction of manuscript numbers also requires the historical input structures and preprocessing choices. See the [reproduction guide](docs/REPRODUCIBILITY.md) for the input contract and limitations.
+**Start with the [complete single-protein demo](demo/README.md):** one bundled FASTA/PDB pair, model download links, a one-command workflow, and reference predictions for all 28 lysines of human PITPNA (Q00169).
+
+> Reproduction status: the archive provides site windows, labels, and the model checkpoint. Full-benchmark FASTA files, PDB structures, precomputed ESM features, and feature-store shards are not deposited in this version. GitHub includes one matching FASTA/PDB pair for the demo. The workflow below rebuilds benchmark features from local sequence/structure inputs; exact reproduction of manuscript numbers also requires the historical input structures and preprocessing choices. See the [reproduction guide](docs/REPRODUCIBILITY.md) for the input contract and limitations.
 
 ## Contents
 
@@ -25,6 +27,7 @@ The release has three components:
 - [Datasets](#datasets)
 - [Project structure](#project-structure)
 - [Installation](#installation)
+- [Complete demo](#complete-demo)
 - [Download resources](#download-resources)
 - [Data preparation](#data-preparation)
 - [Training](#training)
@@ -113,7 +116,10 @@ OmniK/
 ├── vendor/feature_store/             # CPU dataset reader and GPU shard loader
 ├── train_multitask_lysine.py          # Primary training entry point
 ├── docs/                             # Data catalogue and reproduction guide
-├── demo/                             # Small-scale workflow
+├── demo/
+│   ├── inputs/                       # One matching FASTA/PDB pair + 28-site CSV
+│   ├── run_demo.py                   # Raw inputs → fresh features → predictions
+│   └── expected/                     # Reference predictions and run summary
 ├── requirements.txt                  # Runtime dependencies
 ├── environment-ptm.yml               # Historical Linux environment export
 └── CITATION.cff                       # Zenodo resource citation
@@ -146,6 +152,18 @@ python -m pip install torch-scatter==2.1.2 \
 Install [DSSP / `mkdssp`](https://github.com/PDB-REDO/dssp) for secondary-structure and solvent-accessibility graph channels, for example with `conda install -c conda-forge dssp`. Record its version with your experiment. TensorBoard is an optional dashboard.
 
 [`environment-ptm.yml`](environment-ptm.yml) and [`requirements-ptm.txt`](requirements-ptm.txt) preserve the historical full environment. They include analysis packages and platform-specific CUDA wheels; use the focused installation above for a new runtime and consult the exports when matching the original stack.
+
+## Complete demo
+
+The [demo guide](demo/README.md) includes a full-length [Q00169 FASTA](demo/inputs/fasta/Q00169.fasta), its matching [AlphaFold DB v6 PDB](demo/inputs/pdb/Q00169.pdb), [28 lysine inputs](demo/inputs/test.csv), and [reference predictions](demo/expected/predictions.tsv). The benchmark CSVs are not needed for this example.
+
+After installing the environment and downloading the OmniK/ESM weights using the [demo instructions](demo/README.md#2-download-the-three-models), run:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python demo/run_demo.py --compare-reference
+```
+
+This verifies input checksums and sequence/structure alignment, extracts fresh ESM features, builds graphs with DSSP, loads the released checkpoint, and writes `runs/demo-Q00169/predictions.tsv` with **28 sites × eight PTM probabilities**. The [reference run summary](demo/expected/summary.json) records feature coverage, environment and runtime. The demo is an unlabeled inference example; probabilities are uncalibrated and do not measure accuracy.
 
 ## Download resources
 
@@ -317,7 +335,7 @@ The Zenodo resource release acknowledges support from the International Research
 
 ## License
 
-Source code: **MIT**, see [LICENSE](LICENSE). Datasets, pretrained OmniK weights, and prediction tables in Zenodo V1.0: **Creative Commons Attribution 4.0 International (CC BY 4.0)**, as specified in the [record](https://zenodo.org/records/24533479). Upstream ESM models, databases, and third-party packages retain their own licenses and terms.
+Source code: **MIT**, see [LICENSE](LICENSE). Datasets, pretrained OmniK weights, and prediction tables in Zenodo V1.0: **Creative Commons Attribution 4.0 International (CC BY 4.0)**, as specified in the [record](https://zenodo.org/records/24533479). The bundled demo FASTA, PDB and generated demo data are also CC BY 4.0; see their [sources and attribution](demo/README.md#sources-and-license). Upstream ESM models, databases, and third-party packages retain their own licenses and terms.
 
 ## Citation
 

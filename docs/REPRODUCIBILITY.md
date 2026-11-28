@@ -6,6 +6,7 @@ The [main README](../README.md) gives commands in execution order. This guide sp
 
 | Goal | Required resources | Entry point |
 |---|---|---|
+| Run one protein from raw inputs | Bundled Q00169 FASTA/PDB + OmniK/ESM weights + DSSP + CUDA GPU | [Complete demo](../demo/README.md): `python demo/run_demo.py --compare-reference` |
 | Inspect benchmark labels | Zenodo `train.csv`, `val.csv`, `test.csv` | `pandas.read_csv` |
 | Use released human prediction subsets | Four Zenodo `OmniK_human_proteome_*.tsv` tables | Direct download; no GPU needed |
 | Evaluate the released checkpoint | Checkpoint + benchmark splits + compatible features | `prepare_config.py --checkpoint`, then probability export and evaluation |
@@ -13,6 +14,8 @@ The [main README](../README.md) gives commands in execution order. This guide sp
 | Reproduce manuscript numbers | Above, plus historical input versions, graph settings and matching calibration | Requires artifacts/provenance not fully deposited in V1.0 |
 
 ## Local input contract
+
+The [bundled demo](../demo/README.md) supplies one checked full-length sequence/structure pair and an all-unknown site CSV. It demonstrates this input contract without requiring benchmark downloads; [provenance](../demo/inputs/provenance.json) records versions, hashes and source URLs. It does not replace the full-benchmark input collection.
 
 Run commands from the repository root. Use one full protein sequence per accession (`data/fasta/<accession>.fasta`) and a PDB named `data/pdb/<accession>.pdb`. Retain isoform identifiers when present. FASTA headers must identify the accession, either directly or in UniProt `sp|accession|...` / `tr|accession|...` format.
 

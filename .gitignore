@@ -1,4 +1,4 @@
-# Training outputs and model artifacts (keep the repository code-only).
+# Training outputs and model artifacts (small demo inputs are excepted below).
 outputs/
 experiments/
 reports/
@@ -38,4 +38,6 @@ configs/inference*.json
 !configs/generated/site_feature_full_v3/
 !configs/generated/site_feature_full_v3/*.json
 !demo/
+!demo/inputs/test.csv
+!demo/expected/predictions.tsv
 !docs/

@@ -1922,6 +1922,8 @@ def main():
     # Memory optimization
     parser.add_argument("--use_mixed_precision", action="store_true", default=True,
                        help="Use mixed precision for memory efficiency")
+    parser.add_argument("--no_mixed_precision", action="store_false", dest="use_mixed_precision",
+                       help="Extract in FP32, reducing low-precision graph reduction variation")
     parser.add_argument("--max_memory_gb", type=float, default=46.0,
                        help="Maximum GPU memory to use (GB)")
     

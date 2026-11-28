@@ -57,6 +57,8 @@ The original table export identified 35 / 3 / 3 rows with sequence quality flags
 
 ## Inputs not deposited in V1.0
 
+GitHub separately bundles **one** [Q00169 FASTA](../demo/inputs/fasta/Q00169.fasta) and matching [AlphaFold v6 PDB](../demo/inputs/pdb/Q00169.pdb), an unlabeled 28-site CSV, and reference predictions for the [complete demo](../demo/README.md). These CC BY 4.0 example files have [recorded provenance and checksums](../demo/inputs/provenance.json); they are not the full benchmark sequence/structure collection.
+
 The file catalogue does not include full-length FASTA sequences, PDB files, ESM-2/ESM-IF1 upstream checkpoints, an ESM feature HDF5, graph stores, sharded model features, a standalone training positional prior, or fitted post-hoc calibration artifacts. Retrieve upstream models through the [README links](../README.md#data-preparation), supply matching sequences and structures, and use the published rebuild scripts. The inference config helper can recover the trained positional bias from the released checkpoint.
 
 A rebuilt feature store is compatible with the model input schema, but numerical reproduction of historical predictions requires the matching historical inputs and preprocessing. Current UniProt/AlphaFold/PDB downloads do not establish that equivalence.
