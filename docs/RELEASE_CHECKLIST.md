@@ -1,7 +1,10 @@
-# Private-to-public release checklist
+# Resource release checklist
 
-- Confirm that no dataset, feature cache, checkpoint, API key, or private report is tracked.
-- Confirm all ESM, graph, and third-party dependency licenses allow redistribution or document download instructions.
-- Run the dry-run on a clean environment with only the documented environment variables.
-- Add a citation and a reproducibility statement for the manuscript.
-- Change the GitHub repository visibility from private to public only after the paper is public.
+- Keep source code under MIT and identify the Zenodo data/weight license separately.
+- Pin the versioned DOI and preserve exact deposited filenames, sizes and checksums.
+- Provide direct split, model and prediction-table links and a resource citation.
+- Document which sequence, structure, feature and calibration artifacts are not deposited.
+- Validate public CSV column aliases, unknown-label masking and site-key alignment.
+- Verify strict checkpoint loading and a small feature-store export before claiming compatibility.
+- Record the environment and input provenance needed for historical numerical reproduction.
+- Keep generated data, weights, local runtime configs and training outputs out of Git.

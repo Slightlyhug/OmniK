@@ -27,6 +27,11 @@ feature_store*/
 .venv/
 venv/
 .env
+weights/
+features/
+runs/
+configs/local*.json
+configs/inference*.json
 .DS_Store
 
 # Keep the published reference config and documentation examples.

@@ -70,6 +70,7 @@ def canonical_ptm_name(name: str) -> str:
     value = "".join(ch for ch in sanitize_name(name) if ch.isalnum())
     aliases = {
         "2hydroxyisobutyrylation": "2hydroxyisobutyryl",
+        "hydroxyisobutyrylation": "2hydroxyisobutyryl",
         "khib": "2hydroxyisobutyryl", "sumo": "sumoylation",
     }
     return aliases.get(value, value)
@@ -77,6 +78,19 @@ def canonical_ptm_name(name: str) -> str:
 
 def normalize_and_validate_config(config: Dict[str, Any], config_path: Path) -> Dict[str, Any]:
     cfg = copy.deepcopy(config)
+    # Expand paths in nested stage overrides and feature-store settings too.
+    def expand(value):
+        if isinstance(value, str):
+            expanded = os.path.expandvars(value)
+            if "${" in expanded:
+                raise ValueError(f"Unset environment variable in config: {value}")
+            return expanded
+        if isinstance(value, list):
+            return [expand(v) for v in value]
+        if isinstance(value, dict):
+            return {k: expand(v) for k, v in value.items()}
+        return value
+    cfg = expand(cfg)
     config_dir = config_path.resolve().parent
     required = (
         "seq_feature_dim", "struct_feature_dim", "branch_hidden_dim", "fusion_hidden_dim",

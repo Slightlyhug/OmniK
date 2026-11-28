@@ -1,0 +1,211 @@
+{
+  "record_id": 24533479,
+  "doi": "10.5281/zenodo.24533479",
+  "version": "V1.0",
+  "files": [
+    {
+      "name": "Ksumo.tsv",
+      "size": 6283440,
+      "checksum": "md5:502a40b6e2cf4e68838580b1d30a987e",
+      "url": "https://zenodo.org/api/records/24533479/files/Ksumo.tsv/content"
+    },
+    {
+      "name": "Kmal.tsv",
+      "size": 1746966,
+      "checksum": "md5:615670f042192d685a1a1e3483aff27b",
+      "url": "https://zenodo.org/api/records/24533479/files/Kmal.tsv/content"
+    },
+    {
+      "name": "Kac.tsv",
+      "size": 22990134,
+      "checksum": "md5:ede80b247bd2498fbf1950335a0b7d1f",
+      "url": "https://zenodo.org/api/records/24533479/files/Kac.tsv/content"
+    },
+    {
+      "name": "Kla.tsv",
+      "size": 4314059,
+      "checksum": "md5:e64f6b2c6cdd49d56455735e8770080e",
+      "url": "https://zenodo.org/api/records/24533479/files/Kla.tsv/content"
+    },
+    {
+      "name": "Kcr.tsv",
+      "size": 9485169,
+      "checksum": "md5:f0ba4880ea66f32ec044377c6dc9e9b7",
+      "url": "https://zenodo.org/api/records/24533479/files/Kcr.tsv/content"
+    },
+    {
+      "name": "Kub.tsv",
+      "size": 29644890,
+      "checksum": "md5:3577e04fc3569c3b5cec380acde5e02c",
+      "url": "https://zenodo.org/api/records/24533479/files/Kub.tsv/content"
+    },
+    {
+      "name": "README.txt",
+      "size": 542,
+      "checksum": "md5:23c08579e80b5c03e043a718ac6e9d0b",
+      "url": "https://zenodo.org/api/records/24533479/files/README.txt/content"
+    },
+    {
+      "name": "val.csv",
+      "size": 25600795,
+      "checksum": "md5:5b697271e3f0b9ad95a96244b0b87e4e",
+      "url": "https://zenodo.org/api/records/24533479/files/val.csv/content"
+    },
+    {
+      "name": "Ksucc.tsv",
+      "size": 4300479,
+      "checksum": "md5:53ba546adec60418f24f0231d4eb9068",
+      "url": "https://zenodo.org/api/records/24533479/files/Ksucc.tsv/content"
+    },
+    {
+      "name": "Kpup.tsv",
+      "size": 16101,
+      "checksum": "md5:ac52f58951855f0ec8e29aba0021ee9c",
+      "url": "https://zenodo.org/api/records/24533479/files/Kpup.tsv/content"
+    },
+    {
+      "name": "ADPr.tsv",
+      "size": 194256,
+      "checksum": "md5:77d9cac7136ea166a6706fbfc94a3070",
+      "url": "https://zenodo.org/api/records/24533479/files/ADPr.tsv/content"
+    },
+    {
+      "name": "Khib.tsv",
+      "size": 13376645,
+      "checksum": "md5:fa3e371c8e6542c698af1aa3fbf871f0",
+      "url": "https://zenodo.org/api/records/24533479/files/Khib.tsv/content"
+    },
+    {
+      "name": "Kgly.tsv",
+      "size": 496292,
+      "checksum": "md5:8c083caf2982f21445d176027fffad1f",
+      "url": "https://zenodo.org/api/records/24533479/files/Kgly.tsv/content"
+    },
+    {
+      "name": "Kprop.tsv",
+      "size": 78364,
+      "checksum": "md5:9eb1edcd8b15d146e90b9928a9c74c0f",
+      "url": "https://zenodo.org/api/records/24533479/files/Kprop.tsv/content"
+    },
+    {
+      "name": "Kbuty.tsv",
+      "size": 79102,
+      "checksum": "md5:d6bf11d8b963ff48ae704a4a16f12eab",
+      "url": "https://zenodo.org/api/records/24533479/files/Kbuty.tsv/content"
+    },
+    {
+      "name": "Kform.tsv",
+      "size": 16940,
+      "checksum": "md5:338103b525af78b429a8d594c7b9d653",
+      "url": "https://zenodo.org/api/records/24533479/files/Kform.tsv/content"
+    },
+    {
+      "name": "LysPTM-StateDB-all-resours.tsv",
+      "size": 65335427,
+      "checksum": "md5:25793225e8d29864ded4b32052d40560",
+      "url": "https://zenodo.org/api/records/24533479/files/LysPTM-StateDB-all-resours.tsv/content"
+    },
+    {
+      "name": "Kme.tsv",
+      "size": 1809619,
+      "checksum": "md5:46c4ed40d5068ea8dbbfa98f0b76179b",
+      "url": "https://zenodo.org/api/records/24533479/files/Kme.tsv/content"
+    },
+    {
+      "name": "LysPTM-StateDB-multi-state.tsv",
+      "size": 14092792,
+      "checksum": "md5:4efdfbdc18f60da658f25b9835f1220a",
+      "url": "https://zenodo.org/api/records/24533479/files/LysPTM-StateDB-multi-state.tsv/content"
+    },
+    {
+      "name": "Kglut.tsv",
+      "size": 147827,
+      "checksum": "md5:72956ffcc4f4a1a10b3f7d9aaf74fb88",
+      "url": "https://zenodo.org/api/records/24533479/files/Kglut.tsv/content"
+    },
+    {
+      "name": "Kbhb.tsv",
+      "size": 1122416,
+      "checksum": "md5:ea9fd99a797fdd10dc663d01d1bb6468",
+      "url": "https://zenodo.org/api/records/24533479/files/Kbhb.tsv/content"
+    },
+    {
+      "name": "Khbut.tsv",
+      "size": 21657,
+      "checksum": "md5:b77b674da9a20ca49af5c3145b3c81c0",
+      "url": "https://zenodo.org/api/records/24533479/files/Khbut.tsv/content"
+    },
+    {
+      "name": "test.csv",
+      "size": 25558964,
+      "checksum": "md5:9e417daf743fa47158c1b12a9abfb18c",
+      "url": "https://zenodo.org/api/records/24533479/files/test.csv/content"
+    },
+    {
+      "name": "Kphg.tsv",
+      "size": 17371,
+      "checksum": "md5:fcdc9db47e4514a160dd307b69b31e8f",
+      "url": "https://zenodo.org/api/records/24533479/files/Kphg.tsv/content"
+    },
+    {
+      "name": "Klipo.tsv",
+      "size": 1948,
+      "checksum": "md5:0b2e697b84c9a814bae19699cd54600e",
+      "url": "https://zenodo.org/api/records/24533479/files/Klipo.tsv/content"
+    },
+    {
+      "name": "PPI_human_all_high_confidence_interactions_score_gt_0.5.csv",
+      "size": 3074342,
+      "checksum": "md5:a3a4eebb18d1cdfba3f2b96e57bdaf0b",
+      "url": "https://zenodo.org/api/records/24533479/files/PPI_human_all_high_confidence_interactions_score_gt_0.5.csv/content"
+    },
+    {
+      "name": "OmniK_dense0n_checkpoint_last.pt",
+      "size": 919471098,
+      "checksum": "md5:605175807a9f2713ef0f603eeb604714",
+      "url": "https://zenodo.org/api/records/24533479/files/OmniK_dense0n_checkpoint_last.pt/content"
+    },
+    {
+      "name": "OmniK_human_proteome_lysine_hubs_ge_0.5.tsv",
+      "size": 102026634,
+      "checksum": "md5:14c85c84444d2ee7ddadfc25468e0e3d",
+      "url": "https://zenodo.org/api/records/24533479/files/OmniK_human_proteome_lysine_hubs_ge_0.5.tsv/content"
+    },
+    {
+      "name": "Perturbation_PTM_data.tsv",
+      "size": 2425119569,
+      "checksum": "md5:ddd6b83fafea3c777769426943a71e3d",
+      "url": "https://zenodo.org/api/records/24533479/files/Perturbation_PTM_data.tsv/content"
+    },
+    {
+      "name": "OmniK_human_proteome_lysine_hubs_ge_0.6.tsv",
+      "size": 88146659,
+      "checksum": "md5:937570d0952ca268d6b19cd9fe4085d3",
+      "url": "https://zenodo.org/api/records/24533479/files/OmniK_human_proteome_lysine_hubs_ge_0.6.tsv/content"
+    },
+    {
+      "name": "OmniK_human_proteome_lysine_hubs_ge_0.8.tsv",
+      "size": 72764874,
+      "checksum": "md5:979f4e0997fcb5253491b233d7cc5407",
+      "url": "https://zenodo.org/api/records/24533479/files/OmniK_human_proteome_lysine_hubs_ge_0.8.tsv/content"
+    },
+    {
+      "name": "train.csv",
+      "size": 203110529,
+      "checksum": "md5:982fb69d17a41e76b30c29ed821fa51a",
+      "url": "https://zenodo.org/api/records/24533479/files/train.csv/content"
+    },
+    {
+      "name": "OmniK_human_proteome_lysine_hubs_ge_0.7.tsv",
+      "size": 79770561,
+      "checksum": "md5:47bb8b44e5761ec24ee766c52bae85ba",
+      "url": "https://zenodo.org/api/records/24533479/files/OmniK_human_proteome_lysine_hubs_ge_0.7.tsv/content"
+    },
+    {
+      "name": "LysPTM-StateDB-Single.csv",
+      "size": 36429814,
+      "checksum": "md5:4ccccf11e4927d133fb067cb335f041f",
+      "url": "https://zenodo.org/api/records/24533479/files/LysPTM-StateDB-Single.csv/content"
+    }
+  ]
+}

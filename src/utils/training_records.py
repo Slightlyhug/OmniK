@@ -15,7 +15,7 @@ from src.utils.training_state import SplitData
 
 
 def _canonical_ptm_label(name: str) -> str:
-    return sanitize_name(name).replace("-", "").replace("_", "").replace(" ", "")
+    return canonical_ptm_name(name)
 
 
 def _resolve_ptm_from_record(rec: Dict[str, Any], ptm_types: List[str]) -> str:
