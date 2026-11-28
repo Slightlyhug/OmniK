@@ -61,8 +61,6 @@ The configuration's `2-Hydroxyisobutyryl` and `Lactylation` names map to the cor
 |---|---|---:|---|
 | OmniK M6 / SE(3), dense structure branch + task attention | [`OmniK_dense0n_checkpoint_last.pt`](https://zenodo.org/records/24533479/files/OmniK_dense0n_checkpoint_last.pt?download=1) | 919.47 MB | Last checkpoint at epoch 50; eight PTM tasks |
 
-The filename contains the digit **0** in `dense0n`; use the exact name. This release contains the **last** checkpoint, not a separately deposited best-validation checkpoint. The corresponding architecture is defined in [`configs/generated/site_feature_full_v3/config.json`](configs/generated/site_feature_full_v3/config.json).
-
 [Download and checksum manifest](docs/zenodo-manifest.json) · [Complete resource catalogue](docs/DATA_AVAILABILITY.md) · [Workflow validation](docs/VALIDATION.md)
 
 ## Datasets
