@@ -4,6 +4,12 @@ All links below refer to **Zenodo V1.0**, DOI [10.5281/zenodo.24533479](https://
 
 Use the version DOI for reproducible attribution. The concept DOI [10.5281/zenodo.24533478](https://doi.org/10.5281/zenodo.24533478) refers to all versions and may resolve to a newer release in the future.
 
+## Interactive public atlas
+
+The [LysPTM-StateDB web atlas](https://slightlyhug.github.io/LysPTM-StateDB/) provides public searches of all 1,039,044 rows in `LysPTM-StateDB-all-resours.tsv` and all 2,363,865 rows in `Perturbation_PTM_data.tsv`. Query by protein/source gene label or by the original study/comparison group; inspect all original columns, filter responses and export matching TSV rows. The browser data preserve source strings, missing values and duplicate records. The website is independent of the internal workbench server and uses this published V1.0 snapshot.
+
+Use the website URL for interactive access and the version DOI for archived data attribution. [Website source and rebuild instructions](https://github.com/Slightlyhug/LysPTM-StateDB) · [Suggested manuscript wording and citation](https://slightlyhug.github.io/LysPTM-StateDB/#downloads).
+
 ## Complete file catalogue
 
 Sizes below are decimal MB (1 MB = 1,000,000 bytes). Exact sizes, MD5 checksums and API download URLs are in [zenodo-manifest.json](zenodo-manifest.json). The downloader verifies that manifest before accepting a file.

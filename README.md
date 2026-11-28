@@ -16,6 +16,8 @@ The release has three components:
 
 **Data and model DOI: [10.5281/zenodo.24533479](https://doi.org/10.5281/zenodo.24533479).** Use this version-specific DOI to identify the resources used in an experiment.
 
+**[Browse LysPTM-StateDB and perturbation records online →](https://slightlyhug.github.io/LysPTM-StateDB/)** Search by protein/gene or study/comparison, inspect original source fields, filter responses, and export results. The public atlas uses the two versioned Zenodo tables and provides [data availability wording and citation](https://slightlyhug.github.io/LysPTM-StateDB/#downloads).
+
 **Start with the [complete single-protein demo](demo/README.md):** one bundled FASTA/PDB pair, model download links, a one-command workflow, and reference predictions for all 28 lysines of human PITPNA (Q00169).
 
 > Reproduction status: the archive provides site windows, labels, and the model checkpoint. Full-benchmark FASTA files, PDB structures, precomputed ESM features, and feature-store shards are not deposited in this version. GitHub includes one matching FASTA/PDB pair for the demo. The workflow below rebuilds benchmark features from local sequence/structure inputs; exact reproduction of manuscript numbers also requires the historical input structures and preprocessing choices. See the [reproduction guide](docs/REPRODUCIBILITY.md) for the input contract and limitations.
